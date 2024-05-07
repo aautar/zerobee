@@ -1,11 +1,14 @@
 {
     "pageTitle": "ZeeBee Hello",
     "favicon": null,
-    "docs": [
-        {
-            "title": "About",
-            "path": "about.md",
-            "slug": "about"
+    "docs": {
+        "home": {
+            "path": "home.md"
+        },
+        "about": {
+            "x1": {
+                "path": "about/x1.md"
+            }
         }
-    ]
+    }
 }
