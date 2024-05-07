@@ -9,7 +9,7 @@ const PageScaffolder = {
         const cssStyles = `
             .zb-hide { display: none }
         `;
-        
+
         _document.head.insertAdjacentHTML("beforeend", `<style>${cssStyles}</style>`)
     },
 
@@ -22,10 +22,12 @@ const PageScaffolder = {
         this._setupCoreStyles(_document);
         const menuElement = DOMOps.appendHTML(bodyElem, `<menu class="zb-menu"></menu>`);
         const pageElement = DOMOps.appendHTML(bodyElem, `<div class="zb-current-page"></div>`);
+        const criticalErrorElement = DOMOps.appendHTML(bodyElem, `<div class="zb-hide zb-critical-error"></div>`);
 
         return {
             "menuElement": menuElement,
             "pageElement": pageElement,
+            "criticalErrorElement": criticalErrorElement,
         };
     }
 };

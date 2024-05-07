@@ -17,6 +17,12 @@ const ZeroBee = function(_window) {
     const docHtmlMap = new Map();
 
     let curMenuDOMEl = null;
+    let criticalErrorDOMEl = null;
+
+    const surfaceCriticalError = function(_errorMessage) {
+        DOMOps.appendHTML(criticalErrorDOMEl, `<p>${_errorMessage}!</p>`);
+        criticalErrorDOMEl.classList.remove("zb-hide");
+    };
 
     /**
      * 
@@ -127,9 +133,18 @@ const ZeroBee = function(_window) {
     };
 
     this.load = function() {
-        PaperPlane.get("zb.json", new Map(), (_resp) => {
-            loadConfig(_resp);
-        });
+        PaperPlane.get(
+            "zb.json", 
+            new Map(), 
+            (_resp) => {
+                loadConfig(_resp);
+            },
+            (_err, _xhr) => {
+                if(_xhr.status === 404) {
+                    surfaceCriticalError("zb.json configuration file not found");
+                }
+            }
+        );
 
         console.log(`current hash = ${window.location.hash}`);
         _window.addEventListener("hashchange", (_e) => {
@@ -139,6 +154,7 @@ const ZeroBee = function(_window) {
 
     const pageCoreDOMElements = PageScaffolder.setupPage(_window.document);
     curMenuDOMEl = pageCoreDOMElements.menuElement;
+    criticalErrorDOMEl = pageCoreDOMElements.criticalErrorElement;
 };
 
 export { ZeroBee }
