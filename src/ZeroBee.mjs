@@ -1,6 +1,7 @@
 import { PaperPlane } from 'paper-plane';
 import { DOMOps } from './DOMOps.mjs';
 import { MarkdownConversionWorkerJsString } from './MarkdownConversionWorker/MarkdownConversionWorker.string.mjs';
+import { PageScaffolder } from './PageScaffolder.mjs';
 
 /**
  * 
@@ -16,12 +17,6 @@ const ZeroBee = function(_window) {
     const docHtmlMap = new Map();
 
     let curMenuDOMEl = null;
-
-    const createHtmlScaffolding = function() {
-        DOMOps.appendHTML(_window.document.body, `<menu class="zb-menu"></menu>`);
-        DOMOps.appendHTML(_window.document.body, `<div class="zb-current-page"></div>`);
-        curMenuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
-    };
 
     /**
      * 
@@ -74,16 +69,16 @@ const ZeroBee = function(_window) {
     const loadDocSection = function(_subDocs, _parentSlug, _leafChildSlug) {
         if(_leafChildSlug) {
             const menuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
-            const liDOMEl = DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-section-link" href="#">${_leafChildSlug}</a><ul class="zb-submenu hide"></ul></li>`);
+            const liDOMEl = DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-section-link" href="#">${_leafChildSlug}</a><ul class="zb-submenu zb-hide"></ul></li>`);
             const achorDOMEl = liDOMEl.getElementsByClassName("zb-menu-section-link")[0];
             const subMenuULEl = liDOMEl.getElementsByClassName("zb-submenu")[0];
 
             achorDOMEl.addEventListener("click", function(_e) {
                 _e.preventDefault();
-                if(subMenuULEl.classList.contains("hide")) {
-                    subMenuULEl.classList.remove("hide");
+                if(subMenuULEl.classList.contains("zb-hide")) {
+                    subMenuULEl.classList.remove("zb-hide");
                 } else {
-                    subMenuULEl.classList.add("hide");
+                    subMenuULEl.classList.add("zb-hide");
                 }
             });
 
@@ -142,7 +137,8 @@ const ZeroBee = function(_window) {
         });
     };
 
-    createHtmlScaffolding();
+    const pageCoreDOMElements = PageScaffolder.setupPage(_window.document);
+    curMenuDOMEl = pageCoreDOMElements.menuElement;
 };
 
 export { ZeroBee }
