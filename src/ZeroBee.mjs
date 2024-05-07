@@ -15,9 +15,12 @@ const ZeroBee = function(_window) {
 
     const docHtmlMap = new Map();
 
+    let curMenuDOMEl = null;
+
     const createHtmlScaffolding = function() {
         DOMOps.appendHTML(_window.document.body, `<menu class="zb-menu"></menu>`);
         DOMOps.appendHTML(_window.document.body, `<div class="zb-current-page"></div>`);
+        curMenuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
     };
 
     /**
@@ -44,8 +47,7 @@ const ZeroBee = function(_window) {
     const createDocPage = function(_slug, _path, _title) {
         docHtmlMap.set(_slug, null);
 
-        const menuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
-        DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-link" href="#${_slug}">${_title}</a></li>`);
+        DOMOps.appendHTML(curMenuDOMEl, `<li><a class="zb-menu-link" href="#${_slug}">${_title}</a></li>`);
 
         mkConversionWorker.postMessage(
             {
@@ -67,8 +69,27 @@ const ZeroBee = function(_window) {
      * 
      * @param {Object} _subDocs 
      * @param {String} _parentSlug 
+     * @param {String} _leafChildSlug
      */
-    const loadDocSection = function(_subDocs, _parentSlug) {
+    const loadDocSection = function(_subDocs, _parentSlug, _leafChildSlug) {
+        if(_leafChildSlug) {
+            const menuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
+            const liDOMEl = DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-section-link" href="#">${_leafChildSlug}</a><ul class="zb-submenu hide"></ul></li>`);
+            const achorDOMEl = liDOMEl.getElementsByClassName("zb-menu-section-link")[0];
+            const subMenuULEl = liDOMEl.getElementsByClassName("zb-submenu")[0];
+
+            achorDOMEl.addEventListener("click", function(_e) {
+                _e.preventDefault();
+                if(subMenuULEl.classList.contains("hide")) {
+                    subMenuULEl.classList.remove("hide");
+                } else {
+                    subMenuULEl.classList.add("hide");
+                }
+            });
+
+            curMenuDOMEl = subMenuULEl;
+        }
+
         for(const slug in _subDocs) {
             let pageSlug = slug;
             if(_parentSlug !== "") {
@@ -78,7 +99,7 @@ const ZeroBee = function(_window) {
             if(_subDocs[slug].path) {
                 createDocPage(pageSlug, _subDocs[slug].path, `¶${slug}`);
             } else {
-                loadDocSection(_subDocs[slug], pageSlug);
+                loadDocSection(_subDocs[slug], pageSlug, slug);
             }
         }
     };
