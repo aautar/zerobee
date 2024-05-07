@@ -2,6 +2,7 @@
 import babel from 'rollup-plugin-babel';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import stringifyCode from 'rollup-plugin-stringify-code';
+import indexHtmlPackage from './build/rollup-plugin-index-html-package.mjs'
 
 const babelConfig = {
   babelrc: false,
@@ -50,12 +51,19 @@ export default [
     input: ['src/ZeroBee.mjs'],
     output: {
       format: 'esm',
-      dir: 'dist/',
+      file: 'dist/zerobee.min.mjs',
       name: 'ZeroBee'
     },
     plugins: [
       nodeResolve(), 
       babel(babelConfig),
+      indexHtmlPackage(
+        {
+          "srcBundleName": "zerobee.min.mjs",
+          "sourceCodeExportedVar": "ZeroBee",
+          "dest": ["dist/index.html", "example/index.html"],
+        }
+      )
     ],
   },
 ];
