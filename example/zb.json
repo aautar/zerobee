@@ -6,6 +6,7 @@
             "path": "home.md"
         },
         "about": {
+            "title": "About",
             "x1": {
                 "path": "about/x1.md"
             }

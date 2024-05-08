@@ -15,6 +15,7 @@ const ZeroBee = function(_window) {
     const mkConversionWorker = new Worker(mkConversionWorkerURL, {"type": "module"});
 
     const docHtmlMap = new Map();
+    const slugToTitleMap = new Map();
 
     let curMenuDOMEl = null;
     let criticalErrorDOMEl = null;
@@ -60,6 +61,14 @@ const ZeroBee = function(_window) {
 
         mkConversionWorker.onmessage = function(_msg) {
             docHtmlMap.set(_msg.data.slug, _msg.data.html);
+            slugToTitleMap.set(_msg.data.slug, _msg.data.title);
+
+            if(_msg.data.title !== _msg.data.slug) {
+                const menuAnchorEl = _window.document.querySelector(`a[href='#${_msg.data.slug}']`);
+                menuAnchorEl.innerHTML = _msg.data.title;
+            }
+
+
             if(`#${_msg.data.slug}` === window.location.hash) {
                 loadPage(_msg.data.slug);
             }
@@ -72,10 +81,10 @@ const ZeroBee = function(_window) {
      * @param {String} _parentSlug 
      * @param {String} _leafChildSlug
      */
-    const loadDocSection = function(_subDocs, _parentSlug, _leafChildSlug) {
+    const loadDocSection = function(_subDocs, _parentSlug, _leafChildSlug, _title) {
         if(_leafChildSlug) {
             const menuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
-            const liDOMEl = DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-section-link" href="#">${_leafChildSlug}</a><ul class="zb-submenu zb-hide"></ul></li>`);
+            const liDOMEl = DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-section-link" href="#">${_title}</a><ul class="zb-submenu zb-hide"></ul></li>`);
             const achorDOMEl = liDOMEl.getElementsByClassName("zb-menu-section-link")[0];
             const subMenuULEl = liDOMEl.getElementsByClassName("zb-submenu")[0];
 
@@ -98,9 +107,16 @@ const ZeroBee = function(_window) {
             }
 
             if(_subDocs[slug].path) {
-                createDocPage(pageSlug, _subDocs[slug].path, `¶${slug}`);
+                createDocPage(pageSlug, _subDocs[slug].path, `${slug}`);
             } else {
-                loadDocSection(_subDocs[slug], pageSlug, slug);
+                if(typeof _subDocs[slug] === 'object') {
+                    loadDocSection(
+                        _subDocs[slug], 
+                        pageSlug, 
+                        slug, 
+                        (_subDocs[slug].title ? _subDocs[slug].title : slug)
+                    );
+                }
             }
         }
     };
