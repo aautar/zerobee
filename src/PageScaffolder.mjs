@@ -7,6 +7,8 @@ const PageScaffolder = {
      */
     _setupCoreStyles: function(_document) {
         const cssStyles = `
+            * { padding:0; margin:0; text-decoration:none; }
+            ul, li { list-style: none; }
             .zb-hide { display: none }
             .zb-page-wrapper { 
                 display: grid;
