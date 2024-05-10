@@ -17,7 +17,16 @@ const ZeroBee = function(_window) {
     const docHtmlMap = new Map();
     const slugToTitleMap = new Map();
 
-    let curMenuDOMEl = null;
+    /**
+     * @var {ZBMenu|null}
+     */
+    let menu = null;
+
+    /**
+     * @var {ZBMenuSection|null}
+     */
+    let curMenuSection = null;
+
     let criticalErrorDOMEl = null;
 
     const surfaceCriticalError = function(_errorMessage) {
@@ -49,7 +58,11 @@ const ZeroBee = function(_window) {
     const createDocPage = function(_slug, _path, _title) {
         docHtmlMap.set(_slug, null);
 
-        DOMOps.appendHTML(curMenuDOMEl, `<li><a class="zb-menu-link" href="#${_slug}">${_title}</a></li>`);
+        if(curMenuSection) {
+            curMenuSection.addMenuItem(_title, _slug);
+        } else {
+            menu.addMenuItem(_title, _slug);
+        }
 
         mkConversionWorker.postMessage(
             {
@@ -64,8 +77,8 @@ const ZeroBee = function(_window) {
             slugToTitleMap.set(_msg.data.slug, _msg.data.title);
 
             if(_msg.data.title !== _msg.data.slug) {
-                const menuAnchorEl = _window.document.querySelector(`a[href='#${_msg.data.slug}']`);
-                menuAnchorEl.innerHTML = _msg.data.title;
+                //const menuAnchorEl = _window.document.querySelector(`a[href='#${_msg.data.slug}']`);
+                //menuAnchorEl.innerHTML = _msg.data.title;
             }
 
 
@@ -83,21 +96,7 @@ const ZeroBee = function(_window) {
      */
     const loadDocSection = function(_subDocs, _parentSlug, _leafChildSlug, _title) {
         if(_leafChildSlug) {
-            const menuDOMEl = _window.document.getElementsByClassName("zb-menu")[0];
-            const liDOMEl = DOMOps.appendHTML(menuDOMEl, `<li><a class="zb-menu-section-link" href="#">${_title}</a><ul class="zb-submenu zb-hide"></ul></li>`);
-            const achorDOMEl = liDOMEl.getElementsByClassName("zb-menu-section-link")[0];
-            const subMenuULEl = liDOMEl.getElementsByClassName("zb-submenu")[0];
-
-            achorDOMEl.addEventListener("click", function(_e) {
-                _e.preventDefault();
-                if(subMenuULEl.classList.contains("zb-hide")) {
-                    subMenuULEl.classList.remove("zb-hide");
-                } else {
-                    subMenuULEl.classList.add("zb-hide");
-                }
-            });
-
-            curMenuDOMEl = subMenuULEl;
+            curMenuSection = menu.addMenuSection(_title);
         }
 
         for(const slug in _subDocs) {
@@ -169,7 +168,7 @@ const ZeroBee = function(_window) {
     };
 
     const pageCoreDOMElements = PageScaffolder.setupPage(_window.document);
-    curMenuDOMEl = pageCoreDOMElements.menuElement;
+    menu = pageCoreDOMElements.menu;
     criticalErrorDOMEl = pageCoreDOMElements.criticalErrorElement;
 };
 
