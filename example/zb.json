@@ -10,6 +10,15 @@
             "x1": {
                 "path": "about/x1.md"
             }
+        },
+        "sub1": {
+            "title": "sub1",
+            "sub2": {
+                "title": "sub2",
+                "test": {
+                    "path": "sub1/sub2/test.md"
+                }
+            }
         }
     }
 }

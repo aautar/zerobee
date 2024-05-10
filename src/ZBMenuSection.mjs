@@ -21,12 +21,17 @@ const ZBMenuSection = function(_title, _parentDOMElement) {
      * 
      * @param {String} _title 
      * @param {String} _slug 
-     * @param {ZBMenuSection|undefined} _section 
      */
-    this.addMenuItem = function(_title, _slug, _section) {
+    this.addMenuItem = function(_title, _slug) {
         menuItems.push(
             new ZBMenuItem(_title, _slug, subMenuULEl)
         )
+    };
+
+    this.addMenuSection = function(_title) {
+        const sec = new ZBMenuSection(_title, subMenuULEl);
+        menuItems.push(sec);
+        return sec;
     };
 };
 

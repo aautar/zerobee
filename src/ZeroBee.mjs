@@ -96,7 +96,11 @@ const ZeroBee = function(_window) {
      */
     const loadDocSection = function(_subDocs, _parentSlug, _leafChildSlug, _title) {
         if(_leafChildSlug) {
-            curMenuSection = menu.addMenuSection(_title);
+            if(curMenuSection) {
+                curMenuSection = curMenuSection.addMenuSection(_title);
+            } else {
+                curMenuSection = menu.addMenuSection(_title);
+            }
         }
 
         for(const slug in _subDocs) {
@@ -118,6 +122,9 @@ const ZeroBee = function(_window) {
                 }
             }
         }
+
+        // reset
+        curMenuSection = null;
     };
 
     /**
