@@ -29,12 +29,7 @@ const ZeroBee = function(_window) {
 
     let docDisplayPanel = null;
 
-    let criticalErrorDOMEl = null;
-
-    const surfaceCriticalError = function(_errorMessage) {
-        DOMOps.appendHTML(criticalErrorDOMEl, `<p>${_errorMessage}!</p>`);
-        criticalErrorDOMEl.classList.remove("zb-hide");
-    };
+    let criticalErrorPanel = null;
 
     /**
      * 
@@ -164,7 +159,7 @@ const ZeroBee = function(_window) {
             },
             (_err, _xhr) => {
                 if(_xhr.status === 404) {
-                    surfaceCriticalError("zb.json configuration file not found");
+                    criticalErrorPanel.show("zb.json configuration file not found");
                 }
             }
         );
@@ -175,10 +170,10 @@ const ZeroBee = function(_window) {
         });
     };
 
-    const pageCoreDOMElements = PageScaffolder.setupPage(_window.document);
-    docDisplayPanel = pageCoreDOMElements.docDisplayPanel;
-    menu = pageCoreDOMElements.menu;
-    criticalErrorDOMEl = pageCoreDOMElements.criticalErrorElement;
+    const pageComponents = PageScaffolder.setupPage(_window.document);
+    docDisplayPanel = pageComponents.docDisplayPanel;
+    menu = pageComponents.menu;
+    criticalErrorPanel = pageComponents.criticalErrorPanel;
 };
 
 export { ZeroBee }

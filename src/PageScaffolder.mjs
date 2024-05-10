@@ -1,4 +1,5 @@
 import { DOMOps } from './DOMOps.mjs';
+import { ZBCriticalErrorPanel } from './ZBCriticalErrorPanel.mjs';
 import { ZBDocDisplayPanel } from './ZBDocDisplayPanel.mjs';
 import { ZBMenu } from './ZBMenu.mjs';
 
@@ -35,14 +36,12 @@ const PageScaffolder = {
 
         const menu = new ZBMenu(wrapperElement);
         const docDisplayPanel = new ZBDocDisplayPanel(wrapperElement);
-
-        const criticalErrorElement = DOMOps.appendHTML(wrapperElement, `<div class="zb-hide zb-critical-error"></div>`);
+        const criticalErrorPanel = new ZBCriticalErrorPanel(wrapperElement);
 
         return {
             "menu": menu,
             "docDisplayPanel": docDisplayPanel,
-            "wrapperElement": wrapperElement,
-            "criticalErrorElement": criticalErrorElement,
+            "criticalErrorPanel": criticalErrorPanel,
         };
     }
 };
