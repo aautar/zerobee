@@ -1,4 +1,5 @@
 import { DOMOps } from './DOMOps.mjs';
+import { ZBDocDisplayPanel } from './ZBDocDisplayPanel.mjs';
 import { ZBMenu } from './ZBMenu.mjs';
 
 const PageScaffolder = {
@@ -33,16 +34,14 @@ const PageScaffolder = {
         const wrapperElement = DOMOps.appendHTML(bodyElem, `<div class="zb-page-wrapper"></div>`);
 
         const menu = new ZBMenu(wrapperElement);
-        const menuElement = _document.querySelector(".zb-menu");
+        const docDisplayPanel = new ZBDocDisplayPanel(wrapperElement);
 
-        const pageElement = DOMOps.appendHTML(wrapperElement, `<div class="zb-current-page"></div>`);
         const criticalErrorElement = DOMOps.appendHTML(wrapperElement, `<div class="zb-hide zb-critical-error"></div>`);
 
         return {
             "menu": menu,
+            "docDisplayPanel": docDisplayPanel,
             "wrapperElement": wrapperElement,
-            "menuElement": menuElement,
-            "pageElement": pageElement,
             "criticalErrorElement": criticalErrorElement,
         };
     }

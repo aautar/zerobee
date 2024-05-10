@@ -27,6 +27,8 @@ const ZeroBee = function(_window) {
      */
     let curMenuSection = null;
 
+    let docDisplayPanel = null;
+
     let criticalErrorDOMEl = null;
 
     const surfaceCriticalError = function(_errorMessage) {
@@ -44,8 +46,7 @@ const ZeroBee = function(_window) {
         // @todo wait until pageHtml not null 
 
         if(pageHtml !== null) {
-            const pageDOMEl = _window.document.getElementsByClassName("zb-current-page")[0];
-            pageDOMEl.innerHTML = pageHtml;
+            docDisplayPanel.render(pageHtml);
         }
     };
 
@@ -175,6 +176,7 @@ const ZeroBee = function(_window) {
     };
 
     const pageCoreDOMElements = PageScaffolder.setupPage(_window.document);
+    docDisplayPanel = pageCoreDOMElements.docDisplayPanel;
     menu = pageCoreDOMElements.menu;
     criticalErrorDOMEl = pageCoreDOMElements.criticalErrorElement;
 };
