@@ -3,27 +3,34 @@ import markdownit from 'markdown-it';
 
 const md = new markdownit();
 
-self.onmessage = function(_msg) {
-    PaperPlane.get(_msg.data.rootURL + _msg.data.path, new Map(), (_resp) => {
-        // grab title
-        let title = "";
-        let foundStartChar = false;
-        for(let i=0; i<_resp.length; i++) {
-            if(_resp[i] === ' ' || _resp[i] === '\n' || _resp[i] === '#') {
-                if(foundStartChar) {
-                    break;
-                } else {
-                    continue;
-                }
-            }
-
-            foundStartChar = true;
-            title += _resp[i];
+/**
+ * 
+ * @param {String} _mkStr 
+ * @returns {String}
+ */
+const extractTitleFromMarkdownString = function(_mkStr) {
+    // grab title
+    let title = "";
+    let foundStartChar = false;
+    for(let i=0; i<_mkStr.length; i++) {
+        if(foundStartChar && _mkStr[i] === '\n') {
+            break;
         }
 
-        title = title.trim();
+        if(_mkStr[i] === ' ' || _mkStr[i] === '\n' || _mkStr[i] === '#') {
+            continue;
+        }
 
+        foundStartChar = true;
+        title += _mkStr[i];
+    }
 
+    return title.trim();
+};
+
+self.onmessage = function(_msg) {
+    PaperPlane.get(_msg.data.rootURL + _msg.data.path, new Map(), (_resp) => {
+        const title = extractTitleFromMarkdownString(_resp);
         const htmlConversionResult = md.render(_resp);
         postMessage(
             {
