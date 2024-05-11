@@ -1,5 +1,4 @@
 import { PaperPlane } from 'paper-plane';
-import { DOMOps } from './DOMOps.mjs';
 import { MarkdownConversionWorkerJsString } from './MarkdownConversionWorker/MarkdownConversionWorker.string.mjs';
 import { PageScaffolder } from './PageScaffolder.mjs';
 
@@ -73,6 +72,7 @@ const ZeroBee = function(_window) {
             slugToTitleMap.set(_msg.data.slug, _msg.data.title);
 
             if(_msg.data.title !== _msg.data.slug) {
+                menu.updateMenuItemTitle(_msg.data.title, _msg.data.slug);
                 //const menuAnchorEl = _window.document.querySelector(`a[href='#${_msg.data.slug}']`);
                 //menuAnchorEl.innerHTML = _msg.data.title;
             }
