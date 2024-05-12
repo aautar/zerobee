@@ -1,6 +1,7 @@
 {
     "pageTitle": "ZeeBee Hello",
     "favicon": null,
+    "theme": "core",
     "docs": {
         "home": {
             "path": "home.md"

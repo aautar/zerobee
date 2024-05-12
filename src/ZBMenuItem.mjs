@@ -1,7 +1,7 @@
 import { DOMOps } from "./DOMOps.mjs";
 
 const ZBMenuItem = function(_title, _slug, _parentDOMElement) {
-    const liDOMEl = DOMOps.appendHTML(_parentDOMElement, `<li><a class="zb-menu-link" href="#${_slug}">${_title}</a></li>`, true);
+    const liDOMEl = DOMOps.appendHTML(_parentDOMElement, `<li class="zb-menu-item"><a class="zb-menu-link" href="#${_slug}">${_title}</a></li>`, true);
 
     /**
      * 
@@ -26,6 +26,14 @@ const ZBMenuItem = function(_title, _slug, _parentDOMElement) {
      */
     this.getSlug = function() {
         return _slug;
+    };
+
+    this.activate = function() {
+        liDOMEl.getElementsByClassName("zb-menu-link")[0].classList.add('zb-active');
+    };
+
+    this.deactivate = function() {
+        liDOMEl.getElementsByClassName("zb-menu-link")[0].classList.remove('zb-active');
     };
 };
 

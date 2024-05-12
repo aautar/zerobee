@@ -41,6 +41,7 @@ const ZeroBee = function(_window) {
 
         if(pageHtml !== null) {
             docDisplayPanel.render(pageHtml);
+            menu.activateMenuItem(_slug);
         }
     };
 
@@ -144,6 +145,25 @@ const ZeroBee = function(_window) {
 
     /**
      * 
+     * @param {String} _theme 
+     */
+    const loadTheme = function(_theme) {
+        PaperPlane.get(
+            `themes/${_theme}/styles.css`, 
+            new Map(), 
+            (_resp) => {
+                window.document.head.insertAdjacentHTML("beforeend", `<style>${_resp}</style>`)
+            },
+            (_err, _xhr) => {
+                if(_xhr.status === 404) {
+                    criticalErrorPanel.show(`Failed to find stylesheet for ${_theme} theme`);
+                }
+            }
+        );
+    };
+
+    /**
+     * 
      * @param {String} _title 
      */
     this.setPageTitle = function(_title) {
@@ -156,6 +176,9 @@ const ZeroBee = function(_window) {
             new Map(), 
             (_resp) => {
                 loadConfig(_resp);
+                if(_resp.theme) {
+                    loadTheme(_resp.theme);
+                }
             },
             (_err, _xhr) => {
                 if(_xhr.status === 404) {

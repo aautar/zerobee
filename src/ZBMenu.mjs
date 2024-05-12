@@ -4,7 +4,9 @@ import { ZBMenuSection } from "./ZBMenuSection.mjs";
 
 const ZBMenu = function(_parentDOMElement) {
     const menuDOMElement = DOMOps.appendHTML(_parentDOMElement, `<menu class="zb-menu"></menu>`);
-    const menuItems = [];
+
+    const primarySection = new ZBMenuSection(null, menuDOMElement);
+    primarySection.expandSection();
 
     /**
      * 
@@ -12,21 +14,25 @@ const ZBMenu = function(_parentDOMElement) {
      * @param {String} _slug 
      */
     this.updateMenuItemTitle = function(_newTitle, _slug) {
-        for(let i=0; i<menuItems.length; i++) {
-            if(menuItems[i].constructor.name === ZBMenuItem.name && menuItems[i].getSlug() === _slug) {
-                menuItems[i].setTitle(_newTitle);
-                return true;
-            }
+        return primarySection.updateMenuItemTitle(_newTitle, _slug);
+    };
 
-            if(menuItems[i].constructor.name === ZBMenuSection.name) {
-                const foundItem = menuItems[i].updateMenuItemTitle(_newTitle, _slug);
-                if(foundItem) {
-                    return true;
-                }
-            }
-        }
+    /**
+     * 
+     * @param {String} _slug 
+     * @returns {Boolean}
+     */
+    this.activateMenuItem = function(_slug) {
+        return primarySection.activateMenuItem(_slug);
+    };
 
-        return false;
+    /**
+     * 
+     * @param {String} _slug 
+     * @returns {Boolean}
+     */
+    this.deactivateMenuItem = function(_slug) {
+        return primarySection.deactivateMenuItem(_slug);
     };
 
     /**
@@ -35,17 +41,17 @@ const ZBMenu = function(_parentDOMElement) {
      * @param {String} _slug 
      */
     this.addMenuItem = function(_title, _slug) {
-        menuItems.push(
-            new ZBMenuItem(_title, _slug, menuDOMElement)
-        )
+        return primarySection.addMenuItem(_title, _slug);
     };
 
+    /**
+     * 
+     * @param {String} _title 
+     * @returns {ZBMenuSection}
+     */
     this.addMenuSection = function(_title) {
-        const sec = new ZBMenuSection(_title, menuDOMElement);
-        menuItems.push(sec);
-        return sec;
+        return primarySection.addMenuSection(_title);
     };
-
 };
 
 export { ZBMenu }
