@@ -8,12 +8,30 @@ import { PageScaffolder } from './PageScaffolder.mjs';
  */
 const ZeroBee = function(_window) {
     const self = this;
+
+    /**
+     * @var {String}
+     */
     const rootURL = _window.location.origin + _window.location.pathname;
 
+    /**
+     * @var {URL}
+     */
     const mkConversionWorkerURL = URL.createObjectURL(new Blob([ MarkdownConversionWorkerJsString ], { type: 'application/javascript' }));
+
+    /**
+     * @var {Worker}
+     */
     const mkConversionWorker = new Worker(mkConversionWorkerURL, {"type": "module"});
 
+    /**
+     * @var {Map<String, String>}
+     */
     const docHtmlMap = new Map();
+
+    /**
+     * @var {Map<String, String>}
+     */
     const slugToTitleMap = new Map();
 
     /**
@@ -26,8 +44,14 @@ const ZeroBee = function(_window) {
      */
     let curMenuSection = null;
 
+    /**
+     * @var {ZBDocDisplayPanel}
+     */
     let docDisplayPanel = null;
 
+    /**
+     * @var {ZBCriticalErrorPanel}
+     */
     let criticalErrorPanel = null;
 
     /**
@@ -74,8 +98,6 @@ const ZeroBee = function(_window) {
 
             if(_msg.data.title !== _msg.data.slug) {
                 menu.updateMenuItemTitle(_msg.data.title, _msg.data.slug);
-                //const menuAnchorEl = _window.document.querySelector(`a[href='#${_msg.data.slug}']`);
-                //menuAnchorEl.innerHTML = _msg.data.title;
             }
 
 
