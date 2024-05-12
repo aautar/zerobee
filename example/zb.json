@@ -7,7 +7,7 @@
             "path": "home.md"
         },
         "demo": {
-            "title": "Markdown-It",
+            "title": "Demos",
             "markdown-it-demo": {
                 "path": "demo/markdown-it-demo-page.md"
             }

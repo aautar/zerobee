@@ -17,7 +17,7 @@ const extractTitleFromMarkdownString = function(_mkStr) {
             break;
         }
 
-        if(_mkStr[i] === ' ' || _mkStr[i] === '\n' || _mkStr[i] === '#') {
+        if(foundStartChar === false &&_mkStr[i] === ' ' || _mkStr[i] === '\n' || _mkStr[i] === '#') {
             continue;
         }
 
