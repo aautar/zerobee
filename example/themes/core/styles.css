@@ -1,9 +1,136 @@
+/* Reset and common styles */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-* { font-family: "Roboto"; font-size:16px; color:#ccc; }
+* { font-family: "Roboto"; font-size:16px; color:#ccc; font-weight:normal; border: none; box-sizing:border-box; text-align:left; }
 body { background: #262626; }
-h1 { font-size: 38px; }
 
+/* Document styles */
+h1 { 
+    margin: 0 0 12px 0;
+    font-size: 38px; 
+}
+
+h2 { 
+    margin: 20px 0 12px 0;
+    font-size: 28px; 
+}
+
+h3 { 
+    margin: 20px 0 12px 0;
+    font-size: 24px; 
+}
+
+h4 { 
+    margin: 20px 0 12px 0;
+    font-size: 20px; 
+}
+
+h5 { 
+    margin: 20px 0 12px 0;
+    font-size: 18px; 
+}
+
+h6 { 
+    margin: 20px 0 12px 0;
+    font-size: 16px; 
+}
+
+hr {
+    border-top: 1px solid #606060;
+    margin: 16px 0;
+}
+
+b, strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+s {
+    text-decoration: line-through;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+blockquote {
+    display: block;
+    border-left: 4px solid #5c5c5c;
+    padding: 4px 16px;
+}
+
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+
+ol, ul {
+    padding-left: 32px;
+    margin-bottom: 20px;
+}
+
+ul ul, ul ol, ol ul, ol ol {
+    margin-bottom: 0;
+}
+
+ul li {
+    margin: 20px 0;
+    list-style-type: disc;
+}
+
+ol li {
+    margin: 20px 0;
+    list-style-type: decimal;
+}
+
+pre {
+    display: block;
+    margin-bottom: 20px;
+}
+
+code {
+    font-family: 'Courier New', Courier, monospace;
+    display: inline-block;
+    background: #333;
+    padding: 2px 4px;
+}
+
+pre code {
+    display: block;
+    padding: 12px;
+}
+
+
+table {
+    table-layout: auto;
+    width: auto;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+thead {
+    background-color: #333;
+}
+
+th {
+    font-weight: bold;
+}
+
+th, td { 
+    padding: 12px 16px;
+}
+
+a {
+    color: #788bff;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ZeroBee component styles */
 .zb-page-wrapper {
     padding: 20px;
 }
@@ -14,15 +141,19 @@ h1 { font-size: 38px; }
 
 .zb-menu-item {
     padding: 4px 0;
+    list-style-type: none;
+    margin: 0;
 }
 
 .zb-menu-link, .zb-menu-section-link {
     color: #ccc;
     font-weight: 400;
+    text-decoration: none;
 }
 
 .zb-menu-link:hover, .zb-menu-section-link:hover {
     color: #fff;
+    text-decoration: none;
 }
 
 .zb-menu-link.zb-active {

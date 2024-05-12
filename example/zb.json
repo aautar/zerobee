@@ -6,6 +6,12 @@
         "home": {
             "path": "home.md"
         },
+        "demo": {
+            "title": "Markdown-It",
+            "markdown-it-demo": {
+                "path": "demo/markdown-it-demo-page.md"
+            }
+        },
         "about": {
             "title": "About",
             "x1": {
