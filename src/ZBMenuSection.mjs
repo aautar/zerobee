@@ -96,9 +96,11 @@ const ZBMenuSection = function(_title, _parentDOMElement) {
                         foundItem = true;
                         menuItems[i].expandSection();
                     } else {
+                        menuItems[i].deactivateAllMenuItems();
                         menuItems[i].collapseSection();
                     }
                 } else {
+                    menuItems[i].deactivateAllMenuItems();
                     menuItems[i].collapseSection();
                 }
             }
