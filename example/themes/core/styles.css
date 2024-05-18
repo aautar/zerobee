@@ -1,6 +1,7 @@
 /* Reset and common styles */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-* { font-family: "Roboto"; font-size:16px; color:#ccc; font-weight:normal; border: none; box-sizing:border-box; text-align:left; }
+* { padding:0; margin:0; text-decoration:none; font-family: "Roboto"; font-size:16px; color:#ccc; font-weight:normal; border: none; box-sizing:border-box; text-align:left; }
+ul, li { list-style: none; }
 body { background: #262626; }
 
 /* Document styles */
@@ -131,8 +132,19 @@ a:hover {
 }
 
 /* ZeroBee component styles */
+.zb-hide { display: none }
+
 .zb-page-wrapper {
     padding: 20px;
+    display: grid;
+    grid-template-columns: 320px 1fr 280px;
+    gap: 16px;
+}
+
+.zb-menu {
+    position: sticky;
+    top: 20px;
+    height: calc(100vh - 40px); /* 40px to account for top and bottom padding */
 }
 
 .zb-submenu {
@@ -158,4 +170,12 @@ a:hover {
 
 .zb-menu-link.zb-active {
     color: #788bff;
+}
+
+.zb-current-doc-outline ul, .zb-current-doc-outline li {
+    list-style: none;
+}
+
+.zb-current-doc-outline ul {
+    padding: 4px 8px;
 }

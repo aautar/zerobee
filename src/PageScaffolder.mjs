@@ -1,6 +1,7 @@
 import { DOMOps } from './DOMOps.mjs';
 import { ZBCriticalErrorPanel } from './ZBCriticalErrorPanel.mjs';
 import { ZBDocDisplayPanel } from './ZBDocDisplayPanel.mjs';
+import { ZBDocOutlinePanel } from './ZBDocOutlinePanel.mjs';
 import { ZBMenu } from './ZBMenu.mjs';
 
 const PageScaffolder = {
@@ -13,11 +14,6 @@ const PageScaffolder = {
             * { padding:0; margin:0; text-decoration:none; }
             ul, li { list-style: none; }
             .zb-hide { display: none }
-            .zb-page-wrapper { 
-                display: grid;
-                grid-template-columns: 350px 1fr;
-                gap: 16px;
-            }
         `;
 
         _document.head.insertAdjacentHTML("beforeend", `<style>${cssStyles}</style>`)
@@ -37,11 +33,13 @@ const PageScaffolder = {
         const menu = new ZBMenu(wrapperElement);
         const docDisplayPanel = new ZBDocDisplayPanel(wrapperElement);
         const criticalErrorPanel = new ZBCriticalErrorPanel(wrapperElement);
+        const docOutlinePanel = new ZBDocOutlinePanel(wrapperElement);
 
         return {
             "menu": menu,
             "docDisplayPanel": docDisplayPanel,
             "criticalErrorPanel": criticalErrorPanel,
+            "docOutlinePanel": docOutlinePanel,
         };
     }
 };
