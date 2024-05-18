@@ -1,5 +1,5 @@
 // rollup.config.js
-import babel from 'rollup-plugin-babel';
+import babel from '@rollup/plugin-babel'
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import stringifyCode from 'rollup-plugin-stringify-code';
 import indexHtmlPackage from './build/rollup-plugin-index-html-package.mjs'
