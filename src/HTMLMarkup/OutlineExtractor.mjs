@@ -76,6 +76,7 @@ const OutlineExtractor = function() {
                         currentEntryParent['<h1>'] = newOutlineEntry;
                     } else {
                         parentEntry.subTopics.push(newOutlineEntry);
+                        currentEntryParent[tag] = newOutlineEntry;
                     }
                 }
             }
