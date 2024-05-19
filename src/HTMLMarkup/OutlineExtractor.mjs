@@ -12,22 +12,6 @@ const OutlineExtractor = function() {
         return tag;
     };
 
-    const readTagContents = function(_htmlString, _startIndex) {
-        let content = "";
-        for(let i=_startIndex; i<_htmlString.length; i++) {
-            if(_htmlString[i] === '<') {
-                // read tag
-                // if ending tag, break
-                // if something else, ignore and read in contents
-                break;
-            }
-
-            content += _htmlString[i];
-        }
-    
-        return content;
-    };
-
     /**
      * 
      * @param {String} _tag 
@@ -43,7 +27,36 @@ const OutlineExtractor = function() {
             default: return null;
         }
     };
+
+    /**
+     * 
+     * @param {String} _tag 
+     * @returns {Boolean}
+     */
+    const isClosingHeaderTag = function(_tag) {
+        return ["</h1>","</h2>","</h3>","</h4>","</h5>","</h6>"].includes(_tag);
+    };
+
+    const readTagContents = function(_htmlString, _startIndex) {
+        let content = "";
+        for(let i=_startIndex; i<_htmlString.length; i++) {
+            if(_htmlString[i] === '<') {
+                // read tag
+                const tag = readTag(_htmlString, i);
+                if(isClosingHeaderTag(tag)) {
+                    break;
+                } else {
+                    i += tag.length - 1;
+                    continue;
+                }
+            }
+
+            content += _htmlString[i];
+        }
     
+        return content;
+    };
+   
     const extractOutline = function(_htmlString) {
         const outline = [];
         const currentEntryParent = {

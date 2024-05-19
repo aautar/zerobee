@@ -62,3 +62,19 @@ test('extract() returns entries such that <h3> entry is sub-topic of <h2> entry'
     t.assert(outline[0].subTopics[0].subTopics.length === 1);
     t.assert(outline[0].subTopics[0].subTopics[0].title === "Third Heading");
 });
+
+test('extract() extracts title from tag within header tag', t => {
+    const html = `<!DOCTYPE html>
+        <html>
+            <body>
+                <h1><a href="#">First Heading</a></h1>
+            </body>
+        </html>
+    `
+
+    const extractor = new OutlineExtractor();
+    const outline = extractor.extract(html);
+
+    t.assert(outline.length === 1);
+	t.assert(outline[0].title === "First Heading");
+});
