@@ -16,6 +16,9 @@ const OutlineExtractor = function() {
         let content = "";
         for(let i=_startIndex; i<_htmlString.length; i++) {
             if(_htmlString[i] === '<') {
+                // read tag
+                // if ending tag, break
+                // if something else, ignore and read in contents
                 break;
             }
 
@@ -56,7 +59,7 @@ const OutlineExtractor = function() {
             if(_htmlString[i] === '<') {
                 const tag = readTag(_htmlString, i);
                 if(['<h1>', '<h2>', '<h3>', '<h4>', '<h5>', '<h6>'].includes(tag)) {
-                    const contents = readTagContents(_htmlString, i + tag.length);
+                    const contents = readTagContents(_htmlString, i + tag.length); // from tag to /tag
 
                     const newOutlineEntry = {
                         "title": contents,

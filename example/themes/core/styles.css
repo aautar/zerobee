@@ -148,13 +148,12 @@ a:hover {
 }
 
 .zb-submenu {
-    padding: 4px 8px;
+    padding: 0px 8px;
 }
 
 .zb-menu-item {
-    padding: 4px 0;
     list-style-type: none;
-    margin: 0;
+    margin: 12px 0;
 }
 
 .zb-menu-link, .zb-menu-section-link {
@@ -170,12 +169,4 @@ a:hover {
 
 .zb-menu-link.zb-active {
     color: #788bff;
-}
-
-.zb-current-doc-outline ul, .zb-current-doc-outline li {
-    list-style: none;
-}
-
-.zb-current-doc-outline ul {
-    padding: 4px 8px;
 }

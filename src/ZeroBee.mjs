@@ -25,9 +25,9 @@ const ZeroBee = function(_window) {
     const mkConversionWorker = new Worker(mkConversionWorkerURL, {"type": "module"});
 
     /**
-     * @var {Map<String, String>}
+     * @var {Map<String, Object>}
      */
-    const docHtmlMap = new Map();
+    const slugToPageContent = new Map();
 
     /**
      * @var {Map<String, String>}
@@ -45,9 +45,14 @@ const ZeroBee = function(_window) {
     let curMenuSection = null;
 
     /**
-     * @var {ZBDocDisplayPanel}
+     * @var {ZBDocDisplayPanel|null}
      */
     let docDisplayPanel = null;
+
+    /**
+     * @var {ZBDocOutlinePanel|null}
+     */
+    let docOutlinePanel = null;
 
     /**
      * @var {ZBCriticalErrorPanel}
@@ -56,15 +61,36 @@ const ZeroBee = function(_window) {
 
     /**
      * 
+     * @returns {String}
+     */
+    const getWindowLocationHashWithoutQuery = function() {
+        const parts = window.location.hash.split('?');
+        return parts[0];
+    }
+
+    /**
+     * 
+     * @returns {String}
+     */
+    const getWindowLocationQuery = function() {
+        const parts = window.location.hash.split('?');
+        return parts[1];
+    }
+
+    /**
+     * 
      * @param {String} _slug 
      */
     const loadPage = function(_slug) {
-        const pageHtml = docHtmlMap.get(_slug) || null;
+        console.log(`slug: ${_slug}`);
+        console.log(`query: ${getWindowLocationQuery()}`);
+        const pageContent = slugToPageContent.get(_slug) || null;
 
-        // @todo wait until pageHtml not null 
+        // @todo wait until pageContent not null 
 
-        if(pageHtml !== null) {
-            docDisplayPanel.render(pageHtml);
+        if(pageContent !== null) {
+            docDisplayPanel.render(pageContent.html);
+            docOutlinePanel.render(pageContent.outline, _slug);
             menu.activateMenuItem(_slug);
         }
     };
@@ -76,7 +102,7 @@ const ZeroBee = function(_window) {
      * @param {String} _title 
      */
     const createDocPage = function(_slug, _path, _title) {
-        docHtmlMap.set(_slug, null);
+        slugToPageContent.set(_slug, null);
 
         if(curMenuSection) {
             curMenuSection.addMenuItem(_title, _slug);
@@ -93,15 +119,22 @@ const ZeroBee = function(_window) {
         );
 
         mkConversionWorker.onmessage = function(_msg) {
-            docHtmlMap.set(_msg.data.slug, _msg.data.html);
+            slugToPageContent.set(
+                _msg.data.slug, 
+                {
+                    "title": _msg.data.title,
+                    "html": _msg.data.html,
+                    "outline": _msg.data.outline,
+                }                
+            );
+
             slugToTitleMap.set(_msg.data.slug, _msg.data.title);
 
             if(_msg.data.title !== _msg.data.slug) {
                 menu.updateMenuItemTitle(_msg.data.title, _msg.data.slug);
             }
 
-
-            if(`#${_msg.data.slug}` === window.location.hash) {
+            if(`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) {
                 loadPage(_msg.data.slug);
             }
         };
@@ -209,7 +242,7 @@ const ZeroBee = function(_window) {
             }
         );
 
-        console.log(`current hash = ${window.location.hash}`);
+        //console.log(`current hash = ${window.location.hash}`);
         _window.addEventListener("hashchange", (_e) => {
             loadPage(window.location.hash.substring(1));
         });
@@ -219,6 +252,7 @@ const ZeroBee = function(_window) {
     docDisplayPanel = pageComponents.docDisplayPanel;
     menu = pageComponents.menu;
     criticalErrorPanel = pageComponents.criticalErrorPanel;
+    docOutlinePanel = pageComponents.docOutlinePanel;
 };
 
 export { ZeroBee }
