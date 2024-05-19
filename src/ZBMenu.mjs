@@ -1,5 +1,4 @@
 import { DOMOps } from "./DOMOps.mjs";
-import { ZBMenuItem } from "./ZBMenuItem.mjs";
 import { ZBMenuSection } from "./ZBMenuSection.mjs";
 
 const ZBMenu = function(_parentDOMElement) {

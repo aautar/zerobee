@@ -15,6 +15,11 @@ const ZBMenuSection = function(_title, _parentDOMElement) {
     const achorDOMEl = sectionListItemDOMEl.getElementsByClassName("zb-menu-section-link")[0];
     const subMenuULEl = sectionListItemDOMEl.getElementsByClassName("zb-submenu")[0];
 
+    this.clearSubMenuItems = function() {
+        menuItems.length = 0;
+        subMenuULEl.innerHTML = "";
+    };
+
     this.expandSection = function() {
         subMenuULEl.classList.remove("zb-hide");
     };
