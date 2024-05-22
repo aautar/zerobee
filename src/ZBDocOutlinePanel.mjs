@@ -1,4 +1,5 @@
 import { DOMOps } from "./DOMOps.mjs";
+import { HeadingSlugGenerator } from "./HeadingSlugGenerator.mjs";
 import { ZBMenuSection } from "./ZBMenuSection.mjs";
 
 const ZBDocOutlinePanel = function(_parentDOMElement) {
@@ -12,13 +13,9 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
     const outlineVisibilityMap = new Map();
 
-    const generateHeadingSlug = function(_title) {
-        return (_title.toLowerCase()).replaceAll(' ', '-');
-    };
-
     const generateOutlineVisibilityMap = function(_outline, _parentSlug) {
         for(let i=0; i<_outline.length; i++) {
-            const headingSlug = generateHeadingSlug(_outline[i].title);
+            const headingSlug = HeadingSlugGenerator.generate(_outline[i].title);
             outlineVisibilityMap.set(headingSlug, false);
 
             if(_outline[i].subTopics.length > 0) {
@@ -29,7 +26,7 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
     const loadOutlineAsMenuItems = function(_outline, _menuSection, _parentSlug) {
         for(let i=0; i<_outline.length; i++) {
-            const headingSlug = generateHeadingSlug(_outline[i].title);
+            const headingSlug = HeadingSlugGenerator.generate(_outline[i].title);
             _menuSection.addMenuItem(_outline[i].title, `${_parentSlug}?h=${encodeURIComponent(headingSlug)}`);
 
             if(_outline[i].subTopics.length > 0) {
@@ -56,7 +53,7 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
     const onHeaderIntersect = function(e) {
         for(let i=0; i<e.length; i++) {
-            const headingSlug = generateHeadingSlug(e[i].target.innerText);
+            const headingSlug = HeadingSlugGenerator.generate(e[i].target.innerText);
             if(e[i].isIntersecting) {
                 outlineVisibilityMap.set(headingSlug, true);
             } else {

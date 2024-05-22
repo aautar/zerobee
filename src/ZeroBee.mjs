@@ -82,16 +82,26 @@ const ZeroBee = function(_window) {
      * @param {String} _slug 
      */
     const loadPage = function(_slug) {
-        console.log(`slug: ${_slug}`);
-        console.log(`query: ${getWindowLocationQuery()}`);
-        const pageContent = slugToPageContent.get(_slug) || null;
+        const slugParts = _slug.split('?');
+        const slugHashPart = slugParts[0];
+        const queryPart = slugParts[1];
+
+        const pageContent = slugToPageContent.get(slugHashPart) || null;
 
         // @todo wait until pageContent not null 
 
         if(pageContent !== null) {
             docDisplayPanel.render(pageContent.html);
-            docOutlinePanel.render(pageContent.outline, _slug);
-            menu.activateMenuItem(_slug);
+            docOutlinePanel.render(pageContent.outline, slugHashPart);
+            menu.activateMenuItem(slugHashPart);
+
+            const queryParts = queryPart.split('&');
+            queryParts.forEach((_qp) => {
+                const queryKeyVal = _qp.split('=');
+                if(queryKeyVal[0] === 'h') {
+                    docDisplayPanel.scrollHeadingIntoView(queryKeyVal[1]);
+                }
+            });
         }
     };
 
@@ -134,8 +144,13 @@ const ZeroBee = function(_window) {
                 menu.updateMenuItemTitle(_msg.data.title, _msg.data.slug);
             }
 
-            if(`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) {
-                loadPage(_msg.data.slug);
+            if(`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) { // handle loading initial page
+                const queryPart = getWindowLocationQuery();
+                if(queryPart) {
+                    loadPage(_msg.data.slug + `?${queryPart}`);
+                } else {
+                    loadPage(_msg.data.slug);
+                }
             }
         };
     };
@@ -242,7 +257,6 @@ const ZeroBee = function(_window) {
             }
         );
 
-        //console.log(`current hash = ${window.location.hash}`);
         _window.addEventListener("hashchange", (_e) => {
             loadPage(window.location.hash.substring(1));
         });
