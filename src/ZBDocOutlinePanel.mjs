@@ -7,9 +7,29 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
     const primarySection = new ZBMenuSection(null, docOutlinePanelDOMEl);
     primarySection.expandSection();
 
+    let currentParentSlug = "";
+    let insersectionObserver = null;
+
+    const outlineVisibilityMap = new Map();
+
+    const generateHeadingSlug = function(_title) {
+        return (_title.toLowerCase()).replaceAll(' ', '-');
+    };
+
+    const generateOutlineVisibilityMap = function(_outline, _parentSlug) {
+        for(let i=0; i<_outline.length; i++) {
+            const headingSlug = generateHeadingSlug(_outline[i].title);
+            outlineVisibilityMap.set(headingSlug, false);
+
+            if(_outline[i].subTopics.length > 0) {
+                generateOutlineVisibilityMap(_outline[i].subTopics, _parentSlug);
+            }
+        }
+    };
+
     const loadOutlineAsMenuItems = function(_outline, _menuSection, _parentSlug) {
         for(let i=0; i<_outline.length; i++) {
-            const headingSlug = (_outline[i].title.toLowerCase()).replaceAll(' ', '-');
+            const headingSlug = generateHeadingSlug(_outline[i].title);
             _menuSection.addMenuItem(_outline[i].title, `${_parentSlug}?h=${encodeURIComponent(headingSlug)}`);
 
             if(_outline[i].subTopics.length > 0) {
@@ -22,12 +42,65 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
     /**
      * 
+     * @returns {Boolean}
+     */
+    const hasAtLeastOneVisibleSectionInOutlineVisibilityMap = function() {
+        for (const [headSlug, isVisible] of outlineVisibilityMap) {
+            if(isVisible) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    const onHeaderIntersect = function(e) {
+        for(let i=0; i<e.length; i++) {
+            const headingSlug = generateHeadingSlug(e[i].target.innerText);
+            if(e[i].isIntersecting) {
+                outlineVisibilityMap.set(headingSlug, true);
+            } else {
+                outlineVisibilityMap.set(headingSlug, false);
+            }
+        }
+
+        if(hasAtLeastOneVisibleSectionInOutlineVisibilityMap()) { // don't update if we enter an area where no headers are visible
+            primarySection.deactivateAllMenuItems();
+
+            for (const [headSlug, isVisible] of outlineVisibilityMap) {
+                if(isVisible) {
+                    primarySection.activateMenuItem(`${currentParentSlug}?h=${encodeURIComponent(headSlug)}`, false);
+                    break;
+                }
+            }
+        }
+    };
+
+    /**
+     * 
      * @param {Object[]} _outline 
      * @param {String} _parentSlug
      */
     this.render = function(_outline, _parentSlug) {
         primarySection.clearSubMenuItems();
         loadOutlineAsMenuItems(_outline, primarySection, _parentSlug);
+        generateOutlineVisibilityMap(_outline, _parentSlug);
+
+        currentParentSlug = _parentSlug;
+
+        insersectionObserver = new IntersectionObserver(
+            onHeaderIntersect,
+            {
+                root: null,
+                rootMargin: "20px", // figure out how to pull this dynamically
+                threshold: 0.5,
+            }
+        );
+
+        const headerDOMEls = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+        headerDOMEls.forEach((_el) => {
+            insersectionObserver.observe(_el);
+        });
     };
 };
 

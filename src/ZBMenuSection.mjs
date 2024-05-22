@@ -82,8 +82,13 @@ const ZBMenuSection = function(_title, _parentDOMElement) {
     /**
      * 
      * @param {String} _slug 
+     * @param {Boolean} _collapseInactiveSections
      */
-    this.activateMenuItem = function(_slug) {
+    this.activateMenuItem = function(_slug, _collapseInactiveSections) {
+        if(typeof _collapseInactiveSections === 'undefined') {
+            _collapseInactiveSections = true;
+        }
+
         let foundItem = false;
         for(let i=0; i<menuItems.length; i++) {
             if(menuItems[i].constructor.name === ZBMenuItem.name) {
@@ -97,16 +102,20 @@ const ZBMenuSection = function(_title, _parentDOMElement) {
 
             if(menuItems[i].constructor.name === ZBMenuSection.name) {
                 if(!foundItem) {
-                    if(menuItems[i].activateMenuItem(_slug)) {
+                    if(menuItems[i].activateMenuItem(_slug, _collapseInactiveSections)) {
                         foundItem = true;
                         menuItems[i].expandSection();
                     } else {
                         menuItems[i].deactivateAllMenuItems();
-                        menuItems[i].collapseSection();
+                        if(_collapseInactiveSections) {
+                            menuItems[i].collapseSection();
+                        }
                     }
                 } else {
                     menuItems[i].deactivateAllMenuItems();
-                    menuItems[i].collapseSection();
+                    if(_collapseInactiveSections) {
+                        menuItems[i].collapseSection();
+                    }
                 }
             }
         }
