@@ -2,6 +2,7 @@
     "pageTitle": "ZeeBee Hello",
     "favicon": null,
     "theme": "core",
+    "internalLinkFormat": "hash",
     "docs": {
         "home": {
             "path": "home.md"
