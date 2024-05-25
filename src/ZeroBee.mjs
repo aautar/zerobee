@@ -129,6 +129,7 @@ const ZeroBee = function(_window) {
                 "rootURL": rootURL + "docs/",
                 "path": _path,
                 "slug": _slug,
+                "internalLinkFormat": internalLinkFormat,
             }
         );
 
