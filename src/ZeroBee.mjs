@@ -59,7 +59,10 @@ const ZeroBee = function(_window) {
      */
     let criticalErrorPanel = null;
 
-    const internalLinkFormat = "hash";
+    /**
+     * @var {String}
+     */
+    let internalLinkFormat = "hash";
 
     /**
      * 
