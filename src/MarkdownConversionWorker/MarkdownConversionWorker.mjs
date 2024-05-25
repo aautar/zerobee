@@ -9,7 +9,7 @@ self.onmessage = function(_msg) {
     PaperPlane.get(_msg.data.rootURL + _msg.data.path, new Map(), (_resp) => {
         let htmlConversionResult = md.render(_resp);
 
-        if(_msg.internalLinkFormat === "hash") {
+        if(_msg.data.internalLinkFormat === "hash") {
             htmlConversionResult = (new InternalLinkModifier().modifyToSupportHashNav(htmlConversionResult));
         }
 
