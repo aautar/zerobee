@@ -1,4 +1,10 @@
 const TagReader = {
+    /**
+     * 
+     * @param {String} _htmlString 
+     * @param {Number} _startIndex 
+     * @returns {Object}
+     */
     readTag: function(_htmlString, _startIndex) {
         const result = {
             "tag": null,
@@ -33,6 +39,13 @@ const TagReader = {
         return result;
     },
 
+    /**
+     * 
+     * @param {String} _htmlString 
+     * @param {Number} _tagStartIndex 
+     * @param {String} _attributeName 
+     * @returns 
+     */
     readTagAttribute: function(_htmlString, _tagStartIndex, _attributeName) {
         const result = {
             "entireTagString": null,
