@@ -1,17 +1,6 @@
+import { TagReader } from "./TagReader.mjs";
 
 const OutlineExtractor = function() {
-    const readTag = function(_htmlString, _startIndex) {
-        let tag = "";
-        for(let i=_startIndex; i<_htmlString.length; i++) {
-            tag += _htmlString[i];
-            if(_htmlString[i] === '>') {
-                break;
-            }
-        }
-    
-        return tag;
-    };
-
     /**
      * 
      * @param {String} _tag 
@@ -42,11 +31,11 @@ const OutlineExtractor = function() {
         for(let i=_startIndex; i<_htmlString.length; i++) {
             if(_htmlString[i] === '<') {
                 // read tag
-                const tag = readTag(_htmlString, i);
-                if(isClosingHeaderTag(tag)) {
+                const tagInfo = TagReader.readTag(_htmlString, i);
+                if(isClosingHeaderTag(tagInfo.tag)) {
                     break;
                 } else {
-                    i += tag.length - 1;
+                    i += tagInfo.tagWithAttributes.length - 1;
                     continue;
                 }
             }
@@ -70,9 +59,9 @@ const OutlineExtractor = function() {
     
         for(let i=0; i<_htmlString.length; i++) {
             if(_htmlString[i] === '<') {
-                const tag = readTag(_htmlString, i);
-                if(['<h1>', '<h2>', '<h3>', '<h4>', '<h5>', '<h6>'].includes(tag)) {
-                    const contents = readTagContents(_htmlString, i + tag.length); // from tag to /tag
+                const tagInfo = TagReader.readTag(_htmlString, i);
+                if(['<h1>', '<h2>', '<h3>', '<h4>', '<h5>', '<h6>'].includes(tagInfo.tag)) {
+                    const contents = readTagContents(_htmlString, i + tagInfo.tagWithAttributes.length); // from tag to /tag
 
                     const newOutlineEntry = {
                         "title": contents,
@@ -80,7 +69,7 @@ const OutlineExtractor = function() {
                         "subTopics": [],
                     };
 
-                    const higherLevelTag = getHigherLevelTag(tag);
+                    const higherLevelTag = getHigherLevelTag(tagInfo.tag);
                     let parentEntry = null;
                   
                     if(higherLevelTag !== null) {
@@ -92,7 +81,7 @@ const OutlineExtractor = function() {
                         currentEntryParent['<h1>'] = newOutlineEntry;
                     } else {
                         parentEntry.subTopics.push(newOutlineEntry);
-                        currentEntryParent[tag] = newOutlineEntry;
+                        currentEntryParent[tagInfo.tag] = newOutlineEntry;
                     }
                 }
             }
