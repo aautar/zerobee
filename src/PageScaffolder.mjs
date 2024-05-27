@@ -32,7 +32,7 @@ const PageScaffolder = {
 
         const menu = new ZBMenu(wrapperElement);
         const docDisplayPanel = new ZBDocDisplayPanel(wrapperElement);
-        const criticalErrorPanel = new ZBCriticalErrorPanel(wrapperElement);
+        const criticalErrorPanel = new ZBCriticalErrorPanel(document.body);
         const docOutlinePanel = new ZBDocOutlinePanel(wrapperElement);
 
         return {

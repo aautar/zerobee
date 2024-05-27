@@ -170,3 +170,13 @@ a:hover {
 .zb-menu-link.zb-active {
     color: #788bff;
 }
+
+.zb-critical-error {
+    position: fixed;
+    background: #400;
+    padding: 8px;
+    opacity: 0.85;
+    width: 100vw;
+    top: 0;
+    z-index: 100;
+}

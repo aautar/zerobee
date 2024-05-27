@@ -1,6 +1,7 @@
 import { PaperPlane } from 'paper-plane';
 import { MarkdownConversionWorkerJsString } from './MarkdownConversionWorker/MarkdownConversionWorker.string.mjs';
 import { PageScaffolder } from './PageScaffolder.mjs';
+import { ZBError } from './ZBError.mjs';
 
 /**
  * 
@@ -71,7 +72,7 @@ const ZeroBee = function(_window) {
     const getWindowLocationHashWithoutQuery = function() {
         const parts = window.location.hash.split('?');
         return parts[0];
-    }
+    };
 
     /**
      * 
@@ -80,13 +81,13 @@ const ZeroBee = function(_window) {
     const getWindowLocationQuery = function() {
         const parts = window.location.hash.split('?');
         return parts[1];
-    }
+    };
 
     /**
      * 
      * @param {String} _slug 
      */
-    const loadPage = function(_slug) {
+    const loadPage = function(_slug, _onError) {
         const slugParts = _slug.split('?');
         const slugHashPart = slugParts[0];
         const queryPart = slugParts[1];
@@ -96,19 +97,25 @@ const ZeroBee = function(_window) {
         // @todo wait until pageContent not null 
 
         if(pageContent !== null) {
-            docDisplayPanel.render(pageContent.html);
-            docOutlinePanel.render(pageContent.outline, slugHashPart);
-            menu.activateMenuItem(slugHashPart);
+            if(typeof pageContent.error === 'undefined' || pageContent.error === null) {
+                docDisplayPanel.render(pageContent.html);
+                docOutlinePanel.render(pageContent.outline, slugHashPart);
+                menu.activateMenuItem(slugHashPart);
 
-            if(queryPart) {
-                const queryParts = queryPart.split('&');
-                queryParts.forEach((_qp) => {
-                    const queryKeyVal = _qp.split('=');
-                    if(queryKeyVal[0] === 'h') {
-                        docDisplayPanel.scrollHeadingIntoView(queryKeyVal[1]);
-                    }
-                });
+                if(queryPart) {
+                    const queryParts = queryPart.split('&');
+                    queryParts.forEach((_qp) => {
+                        const queryKeyVal = _qp.split('=');
+                        if(queryKeyVal[0] === 'h') {
+                            docDisplayPanel.scrollHeadingIntoView(queryKeyVal[1]);
+                        }
+                    });
+                }
+            } else {
+                throw new ZBError("page-content-not-found", pageContent.error.message);
             }
+        } else {
+            throw new ZBError("page-not-found", "page-not-found");
         }
     };
 
@@ -143,6 +150,7 @@ const ZeroBee = function(_window) {
                     "title": _msg.data.title,
                     "html": _msg.data.html,
                     "outline": _msg.data.outline,
+                    "error": _msg.data.error,
                 }                
             );
 
@@ -154,10 +162,17 @@ const ZeroBee = function(_window) {
 
             if(`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) { // handle loading initial page
                 const queryPart = getWindowLocationQuery();
+                let fullSlug = _msg.data.slug;
                 if(queryPart) {
-                    loadPage(_msg.data.slug + `?${queryPart}`);
-                } else {
-                    loadPage(_msg.data.slug);
+                    fullSlug += `?${queryPart}`;
+                }
+
+                try {
+                    loadPage(fullSlug);
+                } catch(_err) {
+                    if(_err.constructor.name === ZBError.name) {
+                        criticalErrorPanel.addErrorMessage(_err.getMessage());
+                    }
                 }
             }
         };
@@ -238,7 +253,7 @@ const ZeroBee = function(_window) {
             },
             (_err, _xhr) => {
                 if(_xhr.status === 404) {
-                    criticalErrorPanel.show(`Failed to find stylesheet for ${_theme} theme`);
+                    criticalErrorPanel.addErrorMessage(`Failed to find stylesheet for ${_theme} theme`);
                 }
             }
         );
@@ -264,13 +279,22 @@ const ZeroBee = function(_window) {
             },
             (_err, _xhr) => {
                 if(_xhr.status === 404) {
-                    criticalErrorPanel.show("zb.json configuration file not found");
+                    criticalErrorPanel.addErrorMessage("zb.json configuration file not found");
                 }
             }
         );
 
         _window.addEventListener("hashchange", (_e) => {
-            loadPage(window.location.hash.substring(1));
+            criticalErrorPanel.clear();
+            
+            try {
+                loadPage(window.location.hash.substring(1));
+            } catch(_err) {
+                if(_err.constructor.name === ZBError.name) {
+                    // Ideally we should be able to prevent/rollback URL hash change if exception occurs
+                    criticalErrorPanel.addErrorMessage(_err.getMessage());
+                }
+            }
         });
     };
 
