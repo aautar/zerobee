@@ -2,6 +2,7 @@ import { PaperPlane } from 'paper-plane';
 import { MarkdownConversionWorkerJsString } from './MarkdownConversionWorker/MarkdownConversionWorker.string.mjs';
 import { PageScaffolder } from './PageScaffolder.mjs';
 import { ZBError } from './ZBError.mjs';
+import { QueryExtractor } from './URL/QueryExtractor.mjs';
 
 /**
  * 
@@ -103,13 +104,8 @@ const ZeroBee = function(_window) {
                 menu.activateMenuItem(slugHashPart);
 
                 if(queryPart) {
-                    const queryParts = queryPart.split('&');
-                    queryParts.forEach((_qp) => {
-                        const queryKeyVal = _qp.split('=');
-                        if(queryKeyVal[0] === 'h') {
-                            docDisplayPanel.scrollHeadingIntoView(queryKeyVal[1]);
-                        }
-                    });
+                    const queryKeyVals = QueryExtractor.extractKeyValuePairs(queryPart);
+                    docDisplayPanel.scrollHeadingIntoView(queryKeyVals['h']);
                 }
             } else {
                 throw new ZBError("page-content-not-found", pageContent.error.message);
