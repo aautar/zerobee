@@ -149,13 +149,19 @@ const ZeroBee = function(_window) {
                     "error": _msg.data.error,
                 }                
             );
-
-            slugToTitleMap.set(_msg.data.slug, _msg.data.title);
-
-            if(_msg.data.title !== _msg.data.slug) {
-                menu.updateMenuItemTitle(_msg.data.title, _msg.data.slug);
+            
+            if(_msg.data.error === null) {
+                // Only update titles if no error was encountered when loading content
+                slugToTitleMap.set(_msg.data.slug, _msg.data.title);
+                if(_msg.data.title !== _msg.data.slug) {
+                    menu.updateMenuItemTitle(_msg.data.title, _msg.data.slug);
+                }
+            } else {
+                /**
+                 * @todo surface loading error to user? in console?
+                 */
             }
-
+            
             if(`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) { // handle loading initial page
                 const queryPart = getWindowLocationQuery();
                 let fullSlug = _msg.data.slug;
