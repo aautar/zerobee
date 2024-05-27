@@ -111,7 +111,7 @@ const ZeroBee = function(_window) {
                 throw new ZBError("page-content-not-found", pageContent.error.message);
             }
         } else {
-            throw new ZBError("page-not-found", "page-not-found");
+            throw new ZBError("page-not-found", `No content for ${_slug} was loaded (check that entry exists in zb.json)`);
         }
     };
 

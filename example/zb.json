@@ -8,9 +8,9 @@
             "path": "home.md"
         },
         "demo": {
-            "title": "Demos",
+            "title": "Test Pages",
             "markdown-it-demo": {
-                "path": "demo/markdown-it-demo-page.md"
+                "path": "test-pages/markdown-it-demo-page.md"
             }
         },
         "about": {
@@ -26,6 +26,11 @@
                 "test": {
                     "path": "sub1/sub2/test.md"
                 }
+            }
+        },
+        "page-configured": {
+            "markdown-does-not-exist": {
+                "path": "non-existent-file.md"
             }
         }
     }

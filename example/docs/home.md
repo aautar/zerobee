@@ -45,4 +45,6 @@ ZeroBee will take markdown documents and create a static, singe-page, site insta
 ```
 
 ## Test pages
-- [markdown-demo-page](demo/markdown-it-demo)
+- [markdown-demo-page](test-pages/markdown-it-demo)
+- [no zb.json entry / no markdown file](page-not-configured/markdown-does-not-exist) (navigating to this page should surface an error message)
+- [zb.json entry / no markdown file](page-configured/markdown-does-not-exist) (navigating to this page should surface an error message)
