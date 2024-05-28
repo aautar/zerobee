@@ -293,6 +293,9 @@ const ZeroBee = function(_window) {
                 loadPage(window.location.hash.substring(1));
             } catch(_err) {
                 if(_err.constructor.name === ZBError.name) {
+                    const oldURL = new URL(_e.oldURL);
+                    history.replaceState(undefined, undefined, oldURL.hash);
+
                     // Ideally we should be able to prevent/rollback URL hash change if exception occurs
                     criticalErrorPanel.addErrorMessage(_err.getMessage());
                 }
