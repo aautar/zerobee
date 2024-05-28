@@ -175,8 +175,16 @@ a:hover {
     position: fixed;
     background: #400;
     padding: 8px;
-    opacity: 0.85;
-    width: 100vw;
+    opacity: 0.95;
+    width: calc(100vw - (100vw - 100%)); /* viewport width minus scrollbar, https://stackoverflow.com/a/34884924 */
     top: 0;
     z-index: 100;
+    display: grid;
+    grid-template-columns: 1fr 100px;
+    gap: 16px;
+    align-items: center;
+}
+
+.zb-critical-error.zb-hide {
+    display: none;
 }
