@@ -67,6 +67,11 @@ const ZeroBee = function(_window) {
     let internalLinkFormat = "hash";
 
     /**
+     * @var {String}
+     */
+    let siteTitle = "";
+
+    /**
      * 
      * @returns {String}
      */
@@ -102,6 +107,12 @@ const ZeroBee = function(_window) {
                 docDisplayPanel.render(pageContent.html);
                 docOutlinePanel.render(pageContent.outline, slugHashPart);
                 menu.activateMenuItem(slugHashPart);
+
+                if(pageContent.title === pageContent.slug) {
+                    self.setPageTitle(siteTitle);
+                } else {
+                    self.setPageTitle(`${siteTitle}: ${pageContent.title}`);
+                }
 
                 if(queryPart) {
                     const queryKeyVals = QueryExtractor.extractKeyValuePairs(queryPart);
@@ -234,7 +245,8 @@ const ZeroBee = function(_window) {
      * @param {Object} _zbObj 
      */
     const loadConfig = function(_zbObj) {
-        self.setPageTitle(_zbObj.pageTitle);
+        siteTitle = _zbObj.siteTitle;
+        self.setPageTitle(siteTitle);
         loadDocs(_zbObj.docs);
 
         if(_zbObj.internalLinkFormat) {
