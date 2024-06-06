@@ -5,7 +5,7 @@ const HeadingSlugGenerator = {
      * @returns {String}
      */
     generate: function(_headingText) {
-        return (_headingText.toLowerCase()).replaceAll(' ', '-');
+        return encodeURIComponent((_headingText.toLowerCase()).replaceAll(' ', '-'));
     }
 };
 

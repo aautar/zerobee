@@ -8,6 +8,10 @@ ZeroBee will take markdown documents and create a static, singe-page, site insta
 - Browers are increadibly powerful
 - Without the componments of a build process there's a whole lot less to maintain
 
+## Why?
+-- Remove this
+
+
 ## Under the hood
 ```
 {

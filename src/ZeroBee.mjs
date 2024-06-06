@@ -104,7 +104,7 @@ const ZeroBee = function(_window) {
 
         if(pageContent !== null) {
             if(typeof pageContent.error === 'undefined' || pageContent.error === null) {
-                docDisplayPanel.render(pageContent.html);
+                docDisplayPanel.render(pageContent.html, slugHashPart);
                 docOutlinePanel.render(pageContent.outline, slugHashPart);
                 menu.activateMenuItem(slugHashPart);
 

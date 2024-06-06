@@ -27,7 +27,7 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
     const loadOutlineAsMenuItems = function(_outline, _menuSection, _parentSlug) {
         for(let i=0; i<_outline.length; i++) {
             const headingSlug = HeadingSlugGenerator.generate(_outline[i].title);
-            _menuSection.addMenuItem(_outline[i].title, `${_parentSlug}?h=${encodeURIComponent(headingSlug)}`);
+            _menuSection.addMenuItem(_outline[i].title, `${_parentSlug}?h=${headingSlug}`);
 
             if(_outline[i].subTopics.length > 0) {
                 const subSec = _menuSection.addMenuSection("");
@@ -53,7 +53,8 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
     const onHeaderIntersect = function(e) {
         for(let i=0; i<e.length; i++) {
-            const headingSlug = HeadingSlugGenerator.generate(e[i].target.innerText);
+            // By convention slug <=> ID
+            const headingSlug = HeadingSlugGenerator.generate(e[i].target.getAttribute('id'));
             if(e[i].isIntersecting) {
                 outlineVisibilityMap.set(headingSlug, true);
             } else {
@@ -66,7 +67,7 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
             for (const [headSlug, isVisible] of outlineVisibilityMap) {
                 if(isVisible) {
-                    primarySection.activateMenuItem(`${currentParentSlug}?h=${encodeURIComponent(headSlug)}`, false);
+                    primarySection.activateMenuItem(`${currentParentSlug}?h=${headSlug}`, false);
                     break;
                 }
             }

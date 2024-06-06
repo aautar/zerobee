@@ -2,6 +2,7 @@ import { PaperPlane } from 'paper-plane';
 import markdownit from 'markdown-it';
 import { OutlineExtractor } from '../HTMLMarkup/OutlineExtractor.mjs';
 import { InternalLinkModifier } from '../HTMLMarkup/InternalLinkModifier.mjs';
+import { HeadingIDApplier } from '../HTMLMarkup/HeadingIDApplier.mjs';
 
 const md = new markdownit();
 
@@ -15,6 +16,8 @@ self.onmessage = function(_msg) {
             if(_msg.data.internalLinkFormat === "hash") {
                 htmlConversionResult = (new InternalLinkModifier().modifyToSupportHashNav(htmlConversionResult));
             }
+
+            htmlConversionResult = (new HeadingIDApplier().apply(htmlConversionResult));
 
             const outline = (new OutlineExtractor()).extract(htmlConversionResult);
 

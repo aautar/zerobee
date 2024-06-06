@@ -131,6 +131,18 @@ a:hover {
     text-decoration: underline;
 }
 
+h1 .permalink, h2 .permalink, h3 .permalink, h4 .permalink, h5 .permalink, h6 .permalink {
+    font-size: inherit;
+    text-decoration: none;
+    filter: grayscale(1) opacity(0);
+    transition: filter 0.15s ease-in-out;
+    margin-left: 8px;
+}
+
+h1:hover .permalink, h2:hover .permalink, h3:hover .permalink, h4:hover .permalink, h5:hover .permalink, h6:hover .permalink {
+    filter: grayscale(0) opacity(1);
+}
+
 /* ZeroBee component styles */
 .zb-hide { display: none }
 
