@@ -1,43 +1,21 @@
 import { HeadingSlugGenerator } from "../HeadingSlugGenerator.mjs";
+import { Tag } from "./Tag.mjs";
 import { TagReader } from "./TagReader.mjs";
 
 const HeadingIDApplier = function() {
     /**
      * 
-     * @param {String} _tag 
-     * @returns {Boolean}
+     * @param {String} _htmlString 
+     * @param {Number} _startIndex 
+     * @returns {String}
      */
-    const isHeadingStartTag = function(_tag) {
-        if(
-            _tag === '<h1>' ||
-            _tag === '<h2>' ||
-            _tag === '<h3>' ||
-            _tag === '<h4>' ||
-            _tag === '<h5>' ||
-            _tag === '<h6>' 
-        ) {
-            return true;
-        }
-
-        return false;
-    };
-
-    /**
-     * 
-     * @param {String} _tag 
-     * @returns {Boolean}
-     */
-    const isClosingHeaderTag = function(_tag) {
-        return ["</h1>","</h2>","</h3>","</h4>","</h5>","</h6>"].includes(_tag);
-    };
-
     const readTagContents = function(_htmlString, _startIndex) {
         let content = "";
         for(let i=_startIndex; i<_htmlString.length; i++) {
             if(_htmlString[i] === '<') {
                 // read tag
                 const tagInfo = TagReader.readTag(_htmlString, i);
-                if(isClosingHeaderTag(tagInfo.tag)) {
+                if(Tag.isClosingHeaderTag(tagInfo.tag)) {
                     break;
                 } else {
                     i += tagInfo.tagWithAttributes.length - 1;
@@ -51,13 +29,19 @@ const HeadingIDApplier = function() {
         return content;
     };
 
+    /**
+     * 
+     * @param {String} _htmlString 
+     * @param {Number} _startIndex 
+     * @returns {String}
+     */
     const readTagContentsRaw = function(_htmlString, _startIndex) {
         let content = "";
         for(let i=_startIndex; i<_htmlString.length; i++) {
             if(_htmlString[i] === '<') {
                 // read tag
                 const tagInfo = TagReader.readTag(_htmlString, i);
-                if(isClosingHeaderTag(tagInfo.tag)) {
+                if(Tag.isClosingHeaderTag(tagInfo.tag)) {
                     break;
                 }
             }
@@ -84,7 +68,7 @@ const HeadingIDApplier = function() {
             if(_htmlString[i] === '<') {
                 const tagInfo = TagReader.readTag(_htmlString, i);
 
-                if(isHeadingStartTag(tagInfo.tag)) {
+                if(Tag.isHeadingStartTag(tagInfo.tag)) {
                     headingStartTagInfo = tagInfo;
                     const headingStr = readTagContents(_htmlString, tagInfo.startIndex);
                     const headingStrRaw = readTagContentsRaw(_htmlString, tagInfo.startIndex);

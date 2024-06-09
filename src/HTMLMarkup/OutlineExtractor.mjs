@@ -1,38 +1,14 @@
+import { Tag } from "./Tag.mjs";
 import { TagReader } from "./TagReader.mjs";
 
 const OutlineExtractor = function() {
-    /**
-     * 
-     * @param {String} _tag 
-     * @returns {String|null}
-     */
-    const getHigherLevelTag = function(_tag) {
-        switch(_tag) {
-            case "<h2>": return "<h1>";
-            case "<h3>": return "<h2>";
-            case "<h4>": return "<h3>";
-            case "<h5>": return "<h4>";
-            case "<h6>": return "<h5>";
-            default: return null;
-        }
-    };
-
-    /**
-     * 
-     * @param {String} _tag 
-     * @returns {Boolean}
-     */
-    const isClosingHeaderTag = function(_tag) {
-        return ["</h1>","</h2>","</h3>","</h4>","</h5>","</h6>"].includes(_tag);
-    };
-
     const readTagContents = function(_htmlString, _startIndex) {
         let content = "";
         for(let i=_startIndex; i<_htmlString.length; i++) {
             if(_htmlString[i] === '<') {
                 // read tag
                 const tagInfo = TagReader.readTag(_htmlString, i);
-                if(isClosingHeaderTag(tagInfo.tag)) {
+                if(Tag.isClosingHeaderTag(tagInfo.tag)) {
                     break;
                 } else {
                     i += tagInfo.tagWithAttributes.length - 1;
@@ -69,7 +45,7 @@ const OutlineExtractor = function() {
                         "subTopics": [],
                     };
 
-                    const higherLevelTag = getHigherLevelTag(tagInfo.tag);
+                    const higherLevelTag = Tag.getHigherLevelHeadingTag(tagInfo.tag);
                     let parentEntry = null;
                   
                     if(higherLevelTag !== null) {
