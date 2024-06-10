@@ -2,6 +2,7 @@ import { DOMOps } from './DOMOps.mjs';
 import { ZBCriticalErrorPanel } from './ZBCriticalErrorPanel.mjs';
 import { ZBDocDisplayPanel } from './ZBDocDisplayPanel.mjs';
 import { ZBDocOutlinePanel } from './ZBDocOutlinePanel.mjs';
+import { ZBLoadingPanel } from './ZBLoadingPanel.mjs';
 import { ZBMenu } from './ZBMenu.mjs';
 
 const PageScaffolder = {
@@ -12,6 +13,7 @@ const PageScaffolder = {
     _setupCoreStyles: function(_document) {
         const cssStyles = `
             * { padding:0; margin:0; text-decoration:none; }
+            body { background: #262626; }
             ul, li { list-style: none; }
             .zb-hide { display: none }
         `;
@@ -34,12 +36,14 @@ const PageScaffolder = {
         const docDisplayPanel = new ZBDocDisplayPanel(wrapperElement);
         const criticalErrorPanel = new ZBCriticalErrorPanel(document.body);
         const docOutlinePanel = new ZBDocOutlinePanel(wrapperElement);
+        const loadingPanel = new ZBLoadingPanel(document.body);
 
         return {
             "menu": menu,
             "docDisplayPanel": docDisplayPanel,
             "criticalErrorPanel": criticalErrorPanel,
             "docOutlinePanel": docOutlinePanel,
+            "loadingPanel": loadingPanel,
         };
     }
 };

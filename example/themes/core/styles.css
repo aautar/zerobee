@@ -200,3 +200,36 @@ h1:hover .permalink, h2:hover .permalink, h3:hover .permalink, h4:hover .permali
 .zb-critical-error.zb-hide {
     display: none;
 }
+
+.zb-loading-panel {
+    position: fixed;
+    background: #262626;
+    color: #fff;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    transition: filter 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.zb-loading-panel .message {
+    transition: filter 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    filter: blur(0);
+    opacity: 1;
+}
+
+.zb-loading-panel .message.zb-pre-hide {
+    filter: blur(8px);
+    opacity: 0;
+}
+
+.zb-loading-panel.zb-pre-hide {
+    opacity: 0;
+}
+
+.zb-loading-panel.zb-hide {
+    display: none;
+}

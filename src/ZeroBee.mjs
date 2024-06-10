@@ -12,6 +12,16 @@ const ZeroBee = function(_window) {
     const self = this;
 
     /**
+     * @var {Date}
+     */
+    let initialLoadStartTime = new Date();
+
+    /**
+     * @var {Boolean}
+     */
+    let isPerformingInitialLoad = true;
+
+    /**
      * @var {String}
      */
     const rootURL = _window.location.origin + _window.location.pathname;
@@ -60,6 +70,11 @@ const ZeroBee = function(_window) {
      * @var {ZBCriticalErrorPanel}
      */
     let criticalErrorPanel = null;
+
+    /**
+     * @var {ZBLoadingPanel}
+     */
+    let loadingPanel = null;
 
     /**
      * @var {String}
@@ -182,6 +197,10 @@ const ZeroBee = function(_window) {
 
                 try {
                     loadPage(fullSlug);
+                    if(isPerformingInitialLoad) {
+                        isPerformingInitialLoad = false;
+                        loadingPanel.hide(initialLoadStartTime);
+                    }
                 } catch(_err) {
                     if(_err.constructor.name === ZBError.name) {
                         criticalErrorPanel.addErrorMessage(_err.getMessage());
@@ -282,6 +301,10 @@ const ZeroBee = function(_window) {
     };
 
     this.load = function() {
+        isPerformingInitialLoad = true;
+        initialLoadStartTime = new Date();
+        loadingPanel.show();
+
         PaperPlane.get(
             "zb.json", 
             new Map(), 
@@ -320,6 +343,7 @@ const ZeroBee = function(_window) {
     menu = pageComponents.menu;
     criticalErrorPanel = pageComponents.criticalErrorPanel;
     docOutlinePanel = pageComponents.docOutlinePanel;
+    loadingPanel = pageComponents.loadingPanel;
 };
 
 export { ZeroBee }
