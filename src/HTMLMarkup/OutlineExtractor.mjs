@@ -1,7 +1,16 @@
+import { HeadingSlugGenerator } from "../HeadingSlugGenerator.mjs";
 import { Tag } from "./Tag.mjs";
 import { TagReader } from "./TagReader.mjs";
 
 const OutlineExtractor = function() {
+    /**
+     * 
+     * This method should probably be moved to TagReader
+     * 
+     * @param {String} _htmlString 
+     * @param {Number} _startIndex 
+     * @returns {String}
+     */
     const readTagContents = function(_htmlString, _startIndex) {
         let content = "";
         for(let i=_startIndex; i<_htmlString.length; i++) {
@@ -22,6 +31,11 @@ const OutlineExtractor = function() {
         return content;
     };
    
+    /**
+     * 
+     * @param {String} _htmlString 
+     * @returns {Object[]}
+     */
     const extractOutline = function(_htmlString) {
         const outline = [];
         const currentEntryParent = {
@@ -38,10 +52,18 @@ const OutlineExtractor = function() {
                 const tagInfo = TagReader.readTag(_htmlString, i);
                 if(['<h1>', '<h2>', '<h3>', '<h4>', '<h5>', '<h6>'].includes(tagInfo.tag)) {
                     const contents = readTagContents(_htmlString, i + tagInfo.tagWithAttributes.length); // from tag to /tag
+                    const hIdAttrData = TagReader.readTagAttribute(_htmlString, i, "id");
+
+                    let anchorFragmentId = "";
+                    if(hIdAttrData.attributeValue === null) {
+                        console.warn("Failed to get `id` attribute value from heading tag");
+                    } else {
+                        anchorFragmentId = hIdAttrData.attributeValue;
+                    }
 
                     const newOutlineEntry = {
                         "title": contents,
-                        "anchorFragmentId": "",
+                        "anchorFragmentId": anchorFragmentId,
                         "subTopics": [],
                     };
 

@@ -30,12 +30,15 @@ const ZBDocDisplayPanel = function(_parentDOMElement) {
 
         const headerDOMElements = docPanelDOMEl.querySelectorAll("h1, h2, h3, h4, h5, h6");
         headerDOMElements.forEach((_domElem) => {
-            slugPartialToHeading.set(HeadingSlugGenerator.generate(_domElem.innerText), _domElem); // capture before making any mutations to the element
+            const hId = _domElem.getAttribute('id');
+            if(hId) {
+                slugPartialToHeading.set(hId, _domElem); // capture before making any mutations to the element
+            }
         });
 
         headerDOMElements.forEach((_domElem) => {
-            const headingSlugPart = HeadingSlugGenerator.generate(_domElem.innerText);
-            DOMOps.appendHTML(_domElem, `<a class="permalink" href="#${_baseSlug}?h=${headingSlugPart}">¶</a>`);
+            const hId = _domElem.getAttribute('id');
+            DOMOps.appendHTML(_domElem, `<a class="permalink" href="#${_baseSlug}?h=${hId}">¶</a>`);
         });
     };
 };

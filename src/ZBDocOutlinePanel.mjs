@@ -14,9 +14,8 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
     const outlineVisibilityMap = new Map();
 
     const generateOutlineVisibilityMap = function(_outline, _parentSlug) {
-        for(let i=0; i<_outline.length; i++) {
-            const headingSlug = HeadingSlugGenerator.generate(_outline[i].title);
-            outlineVisibilityMap.set(headingSlug, false);
+        for(let i=0; i<_outline.length; i++) {            
+            outlineVisibilityMap.set(_outline[i].anchorFragmentId, false);
 
             if(_outline[i].subTopics.length > 0) {
                 generateOutlineVisibilityMap(_outline[i].subTopics, _parentSlug);
@@ -26,8 +25,7 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
 
     const loadOutlineAsMenuItems = function(_outline, _menuSection, _parentSlug) {
         for(let i=0; i<_outline.length; i++) {
-            const headingSlug = HeadingSlugGenerator.generate(_outline[i].title);
-            _menuSection.addMenuItem(_outline[i].title, `${_parentSlug}?h=${headingSlug}`);
+            _menuSection.addMenuItem(_outline[i].title, `${_parentSlug}?h=${_outline[i].anchorFragmentId}`);
 
             if(_outline[i].subTopics.length > 0) {
                 const subSec = _menuSection.addMenuSection("");
@@ -54,7 +52,7 @@ const ZBDocOutlinePanel = function(_parentDOMElement) {
     const onHeaderIntersect = function(e) {
         for(let i=0; i<e.length; i++) {
             // By convention slug <=> ID
-            const headingSlug = HeadingSlugGenerator.generate(e[i].target.getAttribute('id'));
+            const headingSlug = e[i].target.getAttribute('id');
             if(e[i].isIntersecting) {
                 outlineVisibilityMap.set(headingSlug, true);
             } else {

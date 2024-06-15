@@ -64,12 +64,18 @@ const TagReader = {
 
         result.entireTagString = entireTagString;
 
-        const tagAttributeParts = entireTagString.split(' ');
+        const tagStringNoAngleBrackets = entireTagString.substring(1, entireTagString.length-1);
+        const tagAttributeParts = tagStringNoAngleBrackets.split(' ');
         for(let i=0; i<tagAttributeParts.length; i++) {
             const attrKeyVal = tagAttributeParts[i].split('=');
             if(attrKeyVal[0] === _attributeName) {
                 result.attributeName = _attributeName;
                 result.attributeValue = attrKeyVal[1];
+
+                // remove quotes
+                if(result.attributeValue[0] === `'` || result.attributeValue[0] === `"`) {
+                    result.attributeValue = result.attributeValue.substring(1, result.attributeValue.length - 1);
+                }
 
                 return result;
             }
