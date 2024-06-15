@@ -16,6 +16,18 @@ const PageScaffolder = {
             body { background: #262626; }
             ul, li { list-style: none; }
             .zb-hide { display: none }
+            .zb-loading-panel {
+                position: fixed;
+                background: #262626;
+                color: #fff;
+                width: 100vw;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                display: grid;
+                align-items: center;
+                justify-content: center;
+            }
         `;
 
         _document.head.insertAdjacentHTML("beforeend", `<style>${cssStyles}</style>`)
