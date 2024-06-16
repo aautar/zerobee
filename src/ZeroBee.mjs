@@ -3,6 +3,7 @@ import { MarkdownConversionWorkerJsString } from './MarkdownConversionWorker/Mar
 import { PageScaffolder } from './PageScaffolder.mjs';
 import { ZBError } from './ZBError.mjs';
 import { QueryExtractor } from './URL/QueryExtractor.mjs';
+import { DOMOps } from './DOMOps.mjs';
 
 /**
  * 
@@ -268,6 +269,11 @@ const ZeroBee = function(_window) {
     const loadConfig = function(_zbObj) {
         siteTitle = _zbObj.siteTitle || "ZeroBee Site";
         self.setPageTitle(siteTitle);
+
+        if(_zbObj.favicon) {
+            self.setFavIcon(_zbObj.favicon);
+        }
+
         loadDocs(_zbObj.docs);
 
         if(_zbObj.internalLinkFormat) {
@@ -300,6 +306,14 @@ const ZeroBee = function(_window) {
      */
     this.setPageTitle = function(_title) {
         _window.document.title = _title;
+    };
+
+    /**
+     * 
+     * @param {String} _faviconURL 
+     */
+    this.setFavIcon = function(_faviconURL) {
+        DOMOps.appendHTML(_window.document.head, `<link rel="icon" href="${_faviconURL}">`);
     };
 
     this.load = function() {

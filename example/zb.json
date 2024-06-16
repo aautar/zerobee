@@ -1,6 +1,6 @@
 {
     "siteTit6le": "ZeeBee Hello",
-    "favicon": null,
+    "favicon": "favicon.svg",
     "theme": "custom",
     "internalLinkFormat": "hash",
     "docs": {
