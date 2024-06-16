@@ -35,7 +35,6 @@ const InternalLinkModifier = function() {
 
                 if(tagInfo.tag === '<a>') {
                     const attrInfo = TagReader.readTagAttribute(_htmlString, i, "href");
-                    console.log(attrInfo);
                     
                     if(isRelativeHref(attrInfo.attributeValue)) {
                         const curFullTagString = tagInfo.tagWithAttributes;
