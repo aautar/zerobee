@@ -1,7 +1,7 @@
 {
     "siteTitle": "ZeeBee Hello",
     "favicon": null,
-    "theme": "core",
+    "theme": "custom",
     "internalLinkFormat": "hash",
     "docs": {
         "home": {
