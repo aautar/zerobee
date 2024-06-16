@@ -187,8 +187,9 @@ const ZeroBee = function(_window) {
                  * @todo surface loading error to user? in console?
                  */
             }
-            
-            if(`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) { // handle loading initial page
+           
+            // handle loading initial page
+            if((`#${_msg.data.slug}` === getWindowLocationHashWithoutQuery()) || (_msg.data.slug === "" && getWindowLocationHashWithoutQuery() === "")) {
                 const queryPart = getWindowLocationQuery();
                 let fullSlug = _msg.data.slug;
                 if(queryPart) {
@@ -256,6 +257,7 @@ const ZeroBee = function(_window) {
     const loadDocs = function(_docs) {
         // @todo verify slugs are unique
 
+        createDocPage("", "index.md", ""); // special case for index.md
         loadDocSection(_docs, "");
     };
 
