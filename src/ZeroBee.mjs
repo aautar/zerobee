@@ -266,7 +266,7 @@ const ZeroBee = function(_window) {
      * @param {Object} _zbObj 
      */
     const loadConfig = function(_zbObj) {
-        siteTitle = _zbObj.siteTitle;
+        siteTitle = _zbObj.siteTitle || "ZeroBee Site";
         self.setPageTitle(siteTitle);
         loadDocs(_zbObj.docs);
 
