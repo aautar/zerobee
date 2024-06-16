@@ -24,6 +24,7 @@ const InternalLinkModifier = function() {
     /**
      * 
      * @param {String} _htmlString 
+     * @returns {String}
      */
     this.modifyToSupportHashNav = function(_htmlString) {
         const replacementMap = new Map();
@@ -34,11 +35,12 @@ const InternalLinkModifier = function() {
 
                 if(tagInfo.tag === '<a>') {
                     const attrInfo = TagReader.readTagAttribute(_htmlString, i, "href");
+                    console.log(attrInfo);
                     
                     if(isRelativeHref(attrInfo.attributeValue)) {
                         const curFullTagString = tagInfo.tagWithAttributes;
 
-                        const updatedAttributeValue = attrInfo.attributeValue.substring(0, 1) + '#' + attrInfo.attributeValue.substring(1);
+                        const updatedAttributeValue = '#' + attrInfo.attributeValue;
                         const fullTagStringUpdated = curFullTagString.replaceAll(attrInfo.attributeValue, updatedAttributeValue);
 
                         replacementMap.set(curFullTagString, fullTagStringUpdated);
