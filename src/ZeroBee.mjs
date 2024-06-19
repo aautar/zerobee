@@ -47,35 +47,31 @@ const ZeroBee = function(_window) {
      */
     const slugToTitleMap = new Map();
 
+
     /**
-     * @var {ZBMenu|null}
+     * @var {Object}
      */
-    let menu = null;
+    const pageComponents = PageScaffolder.setupPage(_window.document);
+
+    /**
+     * @constant {ZBDocDisplayPanel} docDisplayPanel
+     * @constant {ZBMenu} menu
+     * @constant {ZBCriticalErrorPanel} criticalErrorPanel
+     * @constant {ZBDocOutlinePanel} docOutlinePanel
+     * @constant {ZBLoadingPanel} loadingPanel
+     */
+    const [docDisplayPanel, menu, criticalErrorPanel, docOutlinePanel, loadingPanel] = [
+        pageComponents.docDisplayPanel,
+        pageComponents.menu,
+        pageComponents.criticalErrorPanel,
+        pageComponents.docOutlinePanel,
+        pageComponents.loadingPanel
+    ];
 
     /**
      * @var {ZBMenuSection|null}
      */
     let curMenuSection = null;
-
-    /**
-     * @var {ZBDocDisplayPanel|null}
-     */
-    let docDisplayPanel = null;
-
-    /**
-     * @var {ZBDocOutlinePanel|null}
-     */
-    let docOutlinePanel = null;
-
-    /**
-     * @var {ZBCriticalErrorPanel}
-     */
-    let criticalErrorPanel = null;
-
-    /**
-     * @var {ZBLoadingPanel}
-     */
-    let loadingPanel = null;
 
     /**
      * @var {String}
@@ -354,12 +350,7 @@ const ZeroBee = function(_window) {
         });
     };
 
-    const pageComponents = PageScaffolder.setupPage(_window.document);
-    docDisplayPanel = pageComponents.docDisplayPanel;
-    menu = pageComponents.menu;
-    criticalErrorPanel = pageComponents.criticalErrorPanel;
-    docOutlinePanel = pageComponents.docOutlinePanel;
-    loadingPanel = pageComponents.loadingPanel;
+
 };
 
 export { ZeroBee }
