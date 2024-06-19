@@ -1,9 +1,9 @@
 import { PaperPlane } from 'paper-plane';
 import { MarkdownConversionWorkerJsString } from './MarkdownConversionWorker/MarkdownConversionWorker.string.mjs';
-import { PageScaffolder } from './PageScaffolder.mjs';
+import { PageScaffolder } from './UserInterface/PageScaffolder.mjs';
 import { ZBError } from './ZBError.mjs';
 import { QueryExtractor } from './URL/QueryExtractor.mjs';
-import { DOMOps } from './DOMOps.mjs';
+import { DOMOps } from './UserInterface/DOMOps.mjs';
 
 /**
  * 
