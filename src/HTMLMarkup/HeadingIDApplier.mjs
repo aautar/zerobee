@@ -1,4 +1,4 @@
-import { HeadingSlugGenerator } from "../HeadingSlugGenerator.mjs";
+import { HeadingSlugGenerator } from "../URL/HeadingSlugGenerator.mjs";
 import { Tag } from "./Tag.mjs";
 import { TagReader } from "./TagReader.mjs";
 

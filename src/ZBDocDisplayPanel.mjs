@@ -1,5 +1,4 @@
 import { DOMOps } from "./DOMOps.mjs";
-import { HeadingSlugGenerator } from "./HeadingSlugGenerator.mjs";
 
 /**
  * 
