@@ -25,5 +25,9 @@ As web clients continue to get more powerful, compute that was traditionally onl
 - Maintain a fast and fluid user experience
 - Little-to-no repetition to minimize maintence burden from content changes (e.g. titles are pulled from markdown files, not declared in config).
 
+## Under the hood
+- Conversion from Markdown to HTML is done via [markdown-it](https://github.com/markdown-it/markdown-it), with conversion being done in the background with a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
+- UI components and DOM manipulation is done with [plain old Javascript](https://www.crockford.com/domjs.html)
+
 ## Current limititations
 - Page slugs are hashes, this allows for easy setup without worrying about configuring redirects on the web server
