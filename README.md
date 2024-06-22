@@ -29,5 +29,21 @@ As web clients continue to get more powerful, compute that was traditionally onl
 - Conversion from Markdown to HTML is done via [markdown-it](https://github.com/markdown-it/markdown-it), with conversion being done in the background with a [web worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers)
 - UI components and DOM manipulation is done with [plain old Javascript](https://www.crockford.com/domjs.html)
 
+## Build
+
+The build process consists of using [rollup.js](https://rollupjs.org/) no create the necessary distribution files, including the `dist/index.html` file intended for use by most consumers.
+
+```bash
+npm run build
+```
+
+The build process will also update the `example/index.html` file.
+
+You can run a local webserver to see these changes, e.g.:
+
+```bash
+npx http-server .
+```
+
 ## Current limititations
 - Page slugs are hashes, this allows for easy setup without worrying about configuring redirects on the web server
